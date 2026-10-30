@@ -50,22 +50,29 @@ class CompliancePolicyGenerator:
 
     def validate_config(self):
         """
-        Validates the loaded configuration.  This is a placeholder, can be expanded.
+        Validates the loaded configuration.
         """
         if not isinstance(self.config, dict):
             logging.error("Invalid configuration format. Expected a dictionary.")
             raise ValueError("Invalid configuration format")
 
-        # Example validation (add more as needed)
-        if 'policies' not in self.config:
-            logging.warning("No 'policies' key found in the configuration.  Some rules may be missed")
+        # The templates loop over config.policies and nothing else. A
+        # config without that key rendered a script with a shebang and
+        # no hardening in it, and the run still reported success, which
+        # is the worst outcome a compliance generator can produce.
+        if not self.config.get('policies'):
+            logging.error("Configuration has no 'policies' to generate from.")
+            raise ValueError("Configuration must define a non-empty 'policies' list")
 
     def load_template(self):
         """
         Loads the Jinja2 template file.
         """
-        template_path = f"templates/{self.platform}/{self.compliance_standard}.j2" # Example path
+        template_path = f"templates/{self.platform}/{self.compliance_standard}.j2"
         try:
+            # The loader root is the working directory, not this file's
+            # folder, on purpose: the caller supplies the template tree
+            # for their own standards, so templates live with the call.
             env = jinja2.Environment(loader=jinja2.FileSystemLoader('.'))
             self.template = env.get_template(template_path)
             logging.info(f"Template loaded from {template_path}")
