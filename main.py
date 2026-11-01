@@ -88,7 +88,17 @@ class CompliancePolicyGenerator:
         Generates the hardening script using the configuration and template.
         """
         try:
+            # Jinja2's default undefined renders as empty text instead
+            # of failing, so a policy key the template names slightly
+            # differently than the config writes a blank into the
+            # script at that spot, and the run still reports success.
+            # The generated script needs reading, not just generating.
             rendered_script = self.template.render(config=self.config)
+            # Config values land in the output exactly as written,
+            # unsanitised, because the output is a script and the
+            # template decides where values go. That makes the config
+            # file trusted input: a service name carrying shell syntax
+            # is carried straight into the generated script.
             with open(self.output_file, 'w') as f:
                 f.write(rendered_script)
             logging.info(f"Script generated successfully: {self.output_file}")
