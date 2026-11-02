@@ -3,164 +3,95 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chs Compliancepolicygenerator: what it is, how it runs, where it stops</title>
-<meta name="description" content="Chs Compliancepolicygenerator is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.">
+<title>chs-compliancepolicygenerator: The Miniature Portrait's Ivory Slice</title>
+<meta name="description" content="Generates platform specific hardening scripts from a YAML configuration file, using a Jinja2 template for the chosen compliance standard and platform.">
 <style>
-:root {
-  --bg: #eee4d2; --panel: #f8f0e0; --ink: #4a1e22;
-  --mut: #ffffff;
-  --acc: #a83e36; --acc2: #406078;
-  --line: #f8f0e0;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-  font-family: ' Gill Sans', 'Segoe UI', sans-serif; line-height: 1.55; }
-code, pre, .mono { font-family: 'SF Mono', monospace; }
-a { color: var(--acc2); }
-.hero { padding: 3rem 6vw 1rem; }
-.hero img.banner { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; }
-.logo { width: 92px; height: 92px; border-radius: 18px;
-  border: 1px solid var(--line); }
-h1 { font-size: 2.4rem; margin: 0.4em 0 0.1em; }
-h2 { border-bottom: 2px solid var(--acc); padding-bottom: 0.2em;
-  margin-top: 2em; }
-.lede { font-size: 1.15rem; max-width: 62ch; }
-main { padding: 0 6vw 3rem; max-width: 1180px; margin: 0 auto; }
-.grid { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.card { background: var(--panel); border: 1px solid var(--line);
-  border-radius: 12px; padding: 1rem 1.2rem; }
-.card.pop { animation: rise 0.7s ease both; }
-@keyframes rise { from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; } }
-pre.code { background: #101014; color: #e8e6df; padding: 1rem 1.2rem;
-  border-radius: 12px; overflow-x: auto; font-size: 0.86rem;
-  border-left: 5px solid var(--acc); }
-table { border-collapse: collapse; width: 100%; }
-td, th { border-bottom: 1px solid var(--line); padding: 0.45rem 0.6rem;
-  text-align: left; }
-.shots { display: grid; gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
-.shots img { width: 100%; height: auto; border: 1px solid var(--line);
-  border-radius: 10px; background: #f4f1e8; }
-footer { padding: 2rem 6vw; border-top: 1px solid var(--line);
-  color: var(--mut); }
-.rail { display: flex; gap: 1.2rem; align-items: flex-start; }
-.rail nav { position: sticky; top: 1rem; min-width: 180px; }
-@media (max-width: 760px) { .rail { flex-direction: column; }
-  .rail nav { position: static; } }
-@media (prefers-reduced-motion: reduce) {
-  .card.pop { animation: none; } * { scroll-behavior: auto; } }
+@font-face{font-family:'Baloo Paaji 2';src:url('fonts/BalooPaaji2.ttf') format('truetype');}
+@font-face{font-family:'Alegreya Sans';src:url('fonts/AlegreyaSans.ttf') format('truetype');}
+:root{--grey:#b8b5ae;--grey2:#c9c6bf;--char:#2e2c2a;--rose:#c48a8a;--ivory:#f5efe0}
+*{box-sizing:border-box}body{margin:0;background:var(--grey);color:var(--char);font-family:'Alegreya Sans',sans-serif;line-height:1.65}
+h1,h2,h3{font-family:'Baloo Paaji 2',sans-serif;color:var(--char)}
+.hero img.heroimg{width:100%;height:56vh;object-fit:cover;display:block}
+.hero .in{padding:1rem 6vw 2rem;max-width:1120px;margin:0 auto}
+.logo{width:200px}
+main{padding:0 6vw 3rem;max-width:1120px;margin:0 auto}
+nav{display:flex;gap:.9rem;flex-wrap:wrap;margin:1.2rem 0}
+.locket{display:inline-block;text-decoration:none;color:var(--char);font-family:'Baloo Paaji 2',sans-serif;padding:.55rem 1.4rem;background:var(--ivory);border:3px solid var(--char);border-radius:50%/60%;text-align:center}
+.locket:hover{background:radial-gradient(ellipse at 50% 50%,rgba(196,138,138,.65),var(--ivory) 75%)}
+.locket:active{text-decoration:underline}
+.locket:focus-visible{outline:3px double #8f8c85;outline-offset:5px}
+.locket::before{content:none}
+.tray{background:var(--grey2);box-shadow:inset 0 6px 0 #d8d5cf,1px 2px 5px rgba(46,44,42,.18);padding:.4rem 1.8rem 1.5rem;margin:1.8rem 0;position:relative}
+.tray h2{font-size:1.5rem;border-bottom:2px solid var(--rose);padding:.2rem .4rem .35rem}
+.tray h2::before{content:'';display:inline-block;width:20px;height:28px;margin-right:.6rem;background:var(--ivory);border:2px solid var(--char);border-radius:50%;vertical-align:-6px}
+pre{background:#efede8;padding:1rem;overflow-x:auto}
+.cmd{font-size:1.18rem;text-align:center;font-weight:700}
+a{color:#7a4a4a}
+a::before{content:'';display:inline-block;width:15px;height:15px;margin-right:.45em;border:2px solid #a88a4a;border-radius:50%;vertical-align:-2px}
+a:hover::before{background:radial-gradient(circle,rgba(196,138,138,.8) 0 4px,transparent 5px)}
+.slice-rule{height:10px;margin:2rem 0;background-image:radial-gradient(circle,#f5efe0 4px,var(--rose) 5px,transparent 6px);background-size:34px 10px;background-repeat:repeat-x}
+table{border-collapse:collapse;width:100%}td,th{padding:.5rem .7rem;border-bottom:1px solid #a9a69f;text-align:left;vertical-align:top}
+tr.required td:first-child{border-left:10px solid var(--rose)}
+.callout{background:#e8cfc9;border:3px solid var(--char);border-radius:50%/12%;padding:.2rem 1.6rem 1rem;margin:1.2rem 0}
+.callout h3{font-size:1.25rem}
+footer{padding:1rem 6vw 2.4rem;max-width:1120px;margin:0 auto}
 </style>
 </head>
-<body class="layout-note">
-<!-- This page exists for chs-compliancepolicygenerator alone: the layout (notebook),
-     the colors, and the type were picked for this project, not
-     shared with the other project pages. The code block below is
-     copied from the file it names, line for line. If it looks
-     plain, that is because the project is plain, and I would
-     rather the page match the project than dress it up. The one
-     thing I will not do here is oversell: what this project does
-     not do is stated on the page, not hidden from it. -->
+<body>
 <header class="hero">
-  <img class="logo" src="assets/logo.png" alt="Chs Compliancepolicygenerator logo">
-  <img class="banner" src="assets/banner.png" alt="">
-  <h1>Chs Compliancepolicygenerator</h1>
-  <p class="mono"><a href="https://github.com/ShadowGuard-AI/chs-compliancepolicygenerator">github.com/ShadowGuard-AI/chs-compliancepolicygenerator</a></p>
+<img class="heroimg" src="assets/intro-banner.png" alt="A blank ivory oval glowing at its rim, an easel slice with a half finished face, and a row of slices at earlier stages, no lettering anywhere">
+<div class="in">
+<img class="logo" src="assets/logo.png" alt="An oval slice of ivory in a locket frame, a half finished miniature portrait on its face">
+<h1>chs-compliancepolicygenerator</h1>
+<p>A cabinet ledger of trays. Each tray holds one stage of the work, the way each ivory slice on the table holds one stage of a face.</p>
+<nav>
+<a class="locket" href="#example">Generate the Hardening Script</a>
+<a class="locket" href="#params">Choose a Standard</a>
+<a class="locket" href="#params">Load the YAML Configuration</a>
+<a class="locket" href="#params">Write the Output Script</a>
+<a class="locket" href="#params">Show Help</a>
+</nav>
+</div>
 </header>
-
 <main>
-  <section class="rail">
-    <nav aria-label="on this page">
-      <p class="mono"><a href="#run">Run it</a><br>
-      <a href="#files">The files</a><br>
-      <a href="#sheets">The sheets</a><br>
-      <a href="https://github.com/ShadowGuard-AI/chs-compliancepolicygenerator">The repo</a></p>
-    </nav>
-    <div>
-      <p class="lede">Chs Compliancepolicygenerator is one of my projects. The README in the repo is short, so this page sticks to what the files themselves show.</p>
-      <div class="grid">
-        <div class="card pop"><h3>What it is</h3>
-          <p>Chs Compliancepolicygenerator: 5 files, 189 counted
-          lines across Python 167, Markdown 20, Text 2. One job, done in the
-          open, in files you can read.</p></div>
-        <div class="card pop"><h3>The biggest piece</h3>
-          <p><code>main.py</code> carries the most
-          lines. If the project grows, that file is where the growth
-          lands first, for better or worse.</p></div>
-        <div class="card pop"><h3>The honest gap</h3>
-          <p>No test files yet. That is the honest gap, and the roadmap in the visuals folder says what the first one should cover.</p></div>
-      </div>
-      <section id="run">
-        <h2>Run it</h2>
-        <p>The repo README has the exact commands for this one. The
-        shape is the shape for most of my projects: clone it, read the
-        top file first so you know what will happen, then run it on
-        something you do not mind breaking.</p>
-        <p class="mono">$ git clone https://github.com/ShadowGuard-AI/chs-compliancepolicygenerator.git<br>$ cd chs-compliancepolicygenerator</p>
-      </section>
-      
-  <section aria-label="real code">
-    <h2>The code, as it sits in the repo</h2>
-    <p>From <code>main.py</code>, line 12 on. I did
-    not tidy it for the page. What you see is what the file has.</p>
-    <pre class="code"><code>
-
-class CompliancePolicyGenerator:
-    &quot;&quot;&quot;
-    Generates configuration hardening scripts based on compliance policies.
-    &quot;&quot;&quot;
-
-    def __init__(self, compliance_standard, config_file, output_file, platform):
-        &quot;&quot;&quot;
-        Initializes the CompliancePolicyGenerator.
-
-        Args:
-            compliance_standard (str): The name of the compliance standard (e.g., CIS).
-            config_file (str): The path to the YAML configuration file.
-            output_file (str): The path to the output script file.
-            platform (str): The target platform (e.g., linux, windows).
-        &quot;&quot;&quot;
-        self.compliance_standard = compliance_standard
-        self.config_file = config_file
-        self.output_file = output_file
-        self.platform = platform
-        self.config = None</code></pre>
-  </section>
-      <section id="files">
-        <h2>The files that matter</h2>
-        <table><tr><th>File</th><th>Lines</th></tr>
-        <tr><td><code>main.py</code></td><td>167</td></tr>
-        <tr><td><code>README.md</code></td><td>20</td></tr>
-        <tr><td><code>requirements.txt</code></td><td>2</td></tr>
-        <tr><td><code>banner.png</code></td><td>0</td></tr>
-        <tr><td><code>logo.png</code></td><td>0</td></tr>
-        </table>
-        <p>Names doing the work: <span class="mono">CompliancePolicyGenerator, setup_argparse, main, __init__, load_config, validate_config, load_template, generate_script</span>.</p>
-      </section>
-      <section id="sheets">
-        <h2>Drawn by hand</h2>
-        <p>I sketch my projects on notebook paper so I have to
-        understand them well enough to draw them. The full set,
-        with the counts and how they were counted, is the
-        <a href="https://github.com/ShadowGuard-AI/chs-compliancepolicygenerator/tree/main/chs-compliancepolicygenerator-Visuals">chs-compliancepolicygenerator-Visuals</a>
-        folder in the repo. Nothing is drawn over the binder holes.
-        That is a rule, not a style.</p>
-        <div class="shots">
-          <img src="assets/architecture.png" alt="Hand drawn architecture sheet for Chs Compliancepolicygenerator">
-          <img src="assets/flowchart.png" alt="Hand drawn flowchart sheet for Chs Compliancepolicygenerator">
-          <img src="assets/product-map.png" alt="Hand drawn product map sheet for Chs Compliancepolicygenerator">
-        </div>
-      </section>
-    </div>
-  </section>
+<section class="tray" id="commission"><h2>A Script Painted to a Standard</h2>
+<p>chs-compliancepolicygenerator generates platform specific hardening scripts, for example shell scripts or Ansible playbooks, from a YAML configuration file, using a Jinja2 template for the chosen compliance standard and platform.</p>
+<p>Two conditions stand at the front. The configuration must define a non empty policies list. The template is read from templates/&lt;platform&gt;/&lt;standard&gt;.j2 relative to the working directory, so the caller supplies the template tree for their own standards. No template ships with this project, and this page invents none.</p>
+<div class="callout"><h3>Policies List Must Not Be Empty</h3><p>A configuration without a non empty policies list fails the run instead of producing an empty script.</p></div>
+<p>Taking the tool up, exactly as the source gives it:</p>
+<pre>git clone https://github.com/ShadowGuard-AI/chs-compliancepolicygenerator</pre>
+<p>That single clone line is the whole install passage in the source. A note from the repository files: requirements.txt lists jinja2 at version 3.1.2 or above and PyYAML at version 6.0 or above.</p>
+<p><a href="https://github.com/ShadowGuard-AI/chs-compliancepolicygenerator">The repository on GitHub</a></p>
+</section>
+<div class="slice-rule"></div>
+<section class="tray" id="example"><h2>One Example Command</h2>
+<pre class="cmd">python3 main.py --compliance-standard CIS --config-file config.yaml --output-file hardening.sh --platform linux</pre>
+<p>CIS is the standard, config.yaml is the configuration, hardening.sh is the script that will be written, and linux is the platform.</p>
+<p>An illustration from the comments of main.py, labelled as an illustration and not as a shipped template: a configuration whose policies list holds one policy named Disable unnecessary services, with services atd and cups, and a template at templates/linux/CIS.j2 that loops over config.policies and writes systemctl disable and systemctl stop lines for each service.</p>
+</section>
+<div class="slice-rule"></div>
+<section class="tray" id="params"><h2>Four Required Choices</h2>
+<table>
+<tr><td><b>-h</b></td><td>Shows a help message and exits.</td></tr>
+<tr class="required"><td><b>-c, --compliance-standard</b></td><td>Gives the compliance standard, for example CIS. Required.</td></tr>
+<tr class="required"><td><b>-f, --config-file</b></td><td>Gives the path to the YAML configuration file. Required.</td></tr>
+<tr class="required"><td><b>-o, --output-file</b></td><td>Gives the path to the output script file. Required.</td></tr>
+<tr class="required"><td><b>-p, --platform</b></td><td>Gives the target platform, for example linux or windows. Required.</td></tr>
+</table>
+<p>Each working entry carries a dust rose mark at its left, because in this tool nothing is optional except help.</p>
+</section>
+<div class="slice-rule"></div>
+<section class="tray" id="verified"><h2>What Was Actually Run</h2>
+<p>The parameter list comes from the argument parser in main.py, and main.py passes py_compile.</p>
+<div class="callout"><h3>Install Jinja2 and PyYAML First</h3><p>A live run was not completed in the documenting wave: the jinja2 package is not installed in that environment and installs were not permitted there, so --help and a generation run both stop at that missing import. Install jinja2 and PyYAML from requirements.txt before running.</p></div>
+<p>Two cautions from the code itself. Configuration values land in the output exactly as written and unsanitised, because the output is a script and the template decides where values go, so the configuration file is trusted input, and a service name carrying shell syntax is carried straight into the generated script. Jinja2's default handling renders a mismatched template key as empty text instead of failing, so the generated script needs reading, not just generating.</p>
+</section>
+<div class="slice-rule"></div>
+<section class="tray"><h2>See LICENSE</h2>
+<pre>See LICENSE.</pre>
+<p>A note under that line: the LICENSE file itself carries the MIT License.</p>
+</section>
 </main>
-<footer>
-  <p>Chs Compliancepolicygenerator is one of my projects. This page was written
-  from the repo itself on 2026-10-30: the counts are the
-  repo's counts, the code is the repo's code, and the gaps are the
-  repo's gaps.</p>
-</footer>
+<footer><p>Theme: The Miniature Portrait's Ivory Slice. Type: Baloo Paaji 2 for headings, Alegreya Sans for reading, both SIL Open Font License 1.1. The lettering reference Ice Season was reference only and is not embedded.</p></footer>
 </body>
 </html>
