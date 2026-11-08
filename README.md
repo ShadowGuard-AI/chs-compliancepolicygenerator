@@ -4,6 +4,8 @@
 
 # chs-compliancepolicygenerator
 
+![The folded corner of a cream canvas sail straight on with a brass eyelet at its point and one red stitched seam running to it, resting on tan pattern paper marked only with pattern lines and fold creases, the heading plate](logo.png)
+
 ![A long bright sail loft floor with a great cream sail spread out over the brown paper pattern, sailmakers kneeling along its edge sewing, rolls of canvas at the far wall](banner.png)
 
 ![A worktable in three depths: the back stays still under a slow change of north light, a portrait accumulates touch by touch on the easel slice, and a bead of rose wash dries on a brush tip at the front edge](scene.svg)
