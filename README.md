@@ -1,12 +1,10 @@
-![A blank ivory oval glowing at its rim in the foreground, the easel slice with its half finished face, the water jar and rose saucer, and a row of slices at earlier stages, no lettering anywhere](intro-banner.png)
+![Hands guiding cream canvas under the needle of an industrial sewing machine along a red stitched seam, the machine's arm carrying the maker's name ADLER, the tan pattern paper at the frame edge and the loft soft behind](intro-banner.png)
 
 > Medium line first: watercolour on ivory, Baloo Paaji 2 in charcoal on a paper grey cabinet register plate, a tiny ivory oval glyph beside this heading and no other.
 
 # chs-compliancepolicygenerator
 
-![The ivory slice mark: an oval slice in a locket frame with a half finished portrait](logo.png)
-
-![A miniaturist worktable with six ivory ovals at different stages, a seventh on an easel under a magnifying glass, and a paper grey label card at the front edge carrying the title](banner.png)
+![A long bright sail loft floor with a great cream sail spread out over the brown paper pattern, sailmakers kneeling along its edge sewing, rolls of canvas at the far wall](banner.png)
 
 ![A worktable in three depths: the back stays still under a slow change of north light, a portrait accumulates touch by touch on the easel slice, and a bead of rose wash dries on a brush tip at the front edge](scene.svg)
 
