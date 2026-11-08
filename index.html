@@ -22,6 +22,7 @@ h1 { font-size: clamp(27px, 4.6vw, 42px); margin: 18px 0 6px; }
 .btns { margin: 22px 0 6px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 a.btn { font-family: "Lustria", serif; text-decoration: none; padding: 11px 22px; border-radius: 999px; border: 2px solid var(--navy); color: var(--navy); background: transparent; }
 a.btn.solid { background: var(--navy); border-color: var(--navy); color: #fff; }
+img.hero-logo { width: min(400px, 82vw); border-radius: 10px; box-shadow: 0 10px 34px rgba(55,49,42,.25); }
 figure { margin: 30px 0; }
 figure img { width: 100%; border-radius: 10px; display: block; box-shadow: 0 8px 28px rgba(55,49,42,.18); }
 figcaption { color: var(--soft); font-size: 15px; text-align: center; margin-top: 9px; }
@@ -44,6 +45,7 @@ footer { margin-top: 52px; border-top: 2px solid var(--line); padding-top: 16px;
 <body>
 <div class="wrap">
 <header class="hero">
+  <img class="hero-logo" src="assets/logo.png" alt="The folded corner of a cream canvas sail straight on with a brass eyelet at its point and one red stitched seam running to it, resting on tan pattern paper marked only with pattern lines and fold creases">
   <h1>chs-compliancepolicygenerator</h1>
   <p class="tagline">The Sail Loft. A command line generator that renders a platform specific hardening script from a YAML configuration file through a Jinja2 template. The loft cuts and sews the working sail from the pattern laid under the canvas, and the pattern is the customer's own: no template and no compliance policy ships with the tool.</p>
   <div class="btns">
