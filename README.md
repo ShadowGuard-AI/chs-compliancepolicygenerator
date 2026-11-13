@@ -10,7 +10,6 @@
 
 ![A worktable in three depths: the back stays still under a slow change of north light, a portrait accumulates touch by touch on the easel slice, and a bead of rose wash dries on a brush tip at the front edge](scene.svg)
 
-# chs-CompliancePolicyGenerator
 Generates platform-specific hardening scripts (for example shell scripts or Ansible playbooks) from a YAML configuration file, using a Jinja2 template for the chosen compliance standard and platform. The configuration must define a non-empty `policies` list. The template is read from `templates/<platform>/<standard>.j2` relative to the working directory, so the caller supplies the template tree for their own standards.
 
 
@@ -53,4 +52,4 @@ Generates platform-specific hardening scripts (for example shell scripts or Ansi
 ![A major divider](sep-heavy.svg)
 
 ## License
-See LICENSE.
+See [LICENSE](LICENSE).
